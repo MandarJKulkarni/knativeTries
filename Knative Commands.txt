@@ -6,17 +6,21 @@ Installing knative on a GKE cluster
 	Open cloud shell and connect to the cluster with the command like below:
 		gcloud container clusters get-credentials [cluster-name] --zone us-central1-c
 	
-	To install knative serving components in your cluster, follow the commands from here (https://knative.dev/docs/install/any-kubernetes-cluster/) or run below commands in the given sequence.
+	To install knative serving components in your cluster, follow the commands from here (https://knative.dev/docs/install/any-kubernetes-cluster/) or 
+	run below commands in the given sequence.
 		kubectl apply --filename https://github.com/knative/serving/releases/download/v0.21.0/serving-crds.yaml
 		kubectl apply --filename https://github.com/knative/serving/releases/download/v0.21.0/serving-core.yaml
 		kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.21.0/istio.yaml
 		kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.21.0/net-istio.yaml
   
-	This completes installation of knative sreving component along with istio
+	This completes installation of knative sreving component along with istio.
+	I observed that command #3 sometimes gives an error (no matches for kind "EnvoyFilter") on first run, but if you re-run it, it succeeds.
 		
-	Ensure the same by running below command.
+	Ensure the knative-serving installation is complete by running the below command.
 		kubectl get pods --namespace knative-serving
 	You would see 6 components in running state.
+
+Installing a sample helloworld application in the cluster.
 
 	Now that you have installed knative serving component, you can install a sample app with just one command.
 	But you need kn executable for that.
