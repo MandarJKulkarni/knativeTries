@@ -6,8 +6,7 @@ Installing knative on a GKE cluster
 	Open cloud shell and connect to the cluster with the command like below:
 		gcloud container clusters get-credentials [cluster-name] --zone us-central1-c
 	
-	To install knative serving components in your cluster, follow the commands from here (https://knative.dev/docs/install/any-kubernetes-cluster/) or 
-	run below commands in the given sequence.
+	To install knative serving components in your cluster, follow the commands from here (https://knative.dev/docs/install/any-kubernetes-cluster/) or run below commands in the given sequence.
 		kubectl apply --filename https://github.com/knative/serving/releases/download/v0.21.0/serving-crds.yaml
 		kubectl apply --filename https://github.com/knative/serving/releases/download/v0.21.0/serving-core.yaml
 		kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.21.0/istio.yaml
@@ -45,7 +44,20 @@ Installing a sample helloworld application in the cluster.
 	Check the value of EXTERNAL-IP from the output.
 	
 	Because we are not using any dns, we need to use -H "Host:" option to access the application.
+	Below is a sample command to try it out.
 		curl -H "Host: helloworld-python.default.example.com" http://34.69.51.41:80
 		
 	If all is well, then you should see response like below:
 		Hello World: Python Sample!
+
+Installing another application in same cluster.
+
+	You can install another sample application in same cluster and access it through curl like below.
+	
+	kn service create helloworld-go --image gcr.io/knative-samples/helloworld-go --env TARGET="Go Sample v1"
+	kubectl get ksvc helloworld-go
+	curl -H "Host: helloworld-go.default.example.com" http://34.69.51.41:80
+	
+	Now that you have 2 applications installed in the same cluster, depending upon the host you specify you access individual application.
+		curl -H "Host: helloworld-python.default.example.com" http://34.69.51.41:80
+		curl -H "Host: helloworld-go.default.example.com" http://34.69.51.41:80	
