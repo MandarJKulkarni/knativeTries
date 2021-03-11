@@ -1,0 +1,47 @@
+Installing knative on a GKE cluster
+
+	Create a standard cluster with node pool containing 3 nodes of machine type e2-standard-2
+		(When I chose machines of type e2-small or e2-medium, I got 'pods unschedulable' errors)
+	
+	Open cloud shell and connect to the cluster with the command like below:
+		gcloud container clusters get-credentials [cluster-name] --zone us-central1-c
+	
+	To install knative serving components in your cluster, follow the commands from here (https://knative.dev/docs/install/any-kubernetes-cluster/) or run below commands in the given sequence.
+		kubectl apply --filename https://github.com/knative/serving/releases/download/v0.21.0/serving-crds.yaml
+		kubectl apply --filename https://github.com/knative/serving/releases/download/v0.21.0/serving-core.yaml
+		kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.21.0/istio.yaml
+		kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.21.0/net-istio.yaml
+  
+	This completes installation of knative sreving component along with istio
+		
+	Ensure the same by running below command.
+		kubectl get pods --namespace knative-serving
+	You would see 6 components in running state.
+
+	Now that you have installed knative serving component, you can install a sample app with just one command.
+	But you need kn executable for that.
+	
+	Install a knative cli from this page(https://knative.dev/docs/install/install-kn/)
+	
+		If you are on Windows, rename the downloaded kn-windows-amd64.exe to kn.exe and make sure it's location is present in PATH variable.
+	
+	
+	Now with just one command you can deploy the service in your kubernetes cluster.
+	(Make sure you are connected to the kubernetes cluster before running below command.)
+		kn service create helloworld-python --image gcr.io/knative-samples/helloworld-python --env TARGET="Python Sample"
+	
+	This should do the trick and you will have a service running which you can access through curl.
+	
+	You can get the details with below command.
+		kubectl get ksvc helloworld-python
+	
+	You can interact with the service by using istio-ingressgateway. Run below command to check the external IP.
+	
+		kubectl --namespace istio-system get service istio-ingressgateway
+	Check the value of EXTERNAL-IP from the output.
+	
+	Because we are not using any dns, we need to use -H "Host:" option to access the application.
+		curl -H "Host: helloworld-python.default.example.com" http://34.69.51.41:80
+		
+	If all is well, then you should see response like below:
+		Hello World: Python Sample!
