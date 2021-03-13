@@ -28,7 +28,6 @@ Installing a sample helloworld application in the cluster.
 	
 		If you are on Windows, rename the downloaded kn-windows-amd64.exe to kn.exe and make sure it's location is present in PATH variable.
 	
-	
 	Now with just one command you can deploy the service in your kubernetes cluster.
 	(Make sure you are connected to the kubernetes cluster before running below command.)
 		kn service create helloworld-python --image gcr.io/knative-samples/helloworld-python --env TARGET="Python Sample"
@@ -58,9 +57,13 @@ Installing another application in same cluster.
 	kubectl get ksvc helloworld-go
 	curl -H "Host: helloworld-go.default.example.com" http://34.69.51.41:80
 	
+	If all is well, you should see response like below:
+		Hello Go Sample v1!
+	
 	Now that you have 2 applications installed in the same cluster, depending upon the host you specify you access individual application.
 		curl -H "Host: helloworld-python.default.example.com" http://34.69.51.41:80
 		curl -H "Host: helloworld-go.default.example.com" http://34.69.51.41:80	
+		
 Checking pods:
 	You can check that pods immediately scale down to zero when the services are not in use.
 		kubectl get pods
