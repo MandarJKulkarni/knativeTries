@@ -61,3 +61,11 @@ Installing another application in same cluster.
 	Now that you have 2 applications installed in the same cluster, depending upon the host you specify you access individual application.
 		curl -H "Host: helloworld-python.default.example.com" http://34.69.51.41:80
 		curl -H "Host: helloworld-go.default.example.com" http://34.69.51.41:80	
+Checking pods:
+	You can check that pods immediately scale down to zero when the services are not in use.
+		kubectl get pods
+	
+Deleting the application
+	You can delete the application by using kn command OR kubectl command
+		kn service delete helloworld-go
+		kubectl delete ksvc helloworld-go
