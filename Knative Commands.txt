@@ -69,6 +69,7 @@ Checking pods:
 		kubectl get pods
 	
 Deleting the application
-	You can delete the application by using kn command OR kubectl command
-		kn service delete helloworld-go
-		kubectl delete ksvc helloworld-go
+	You can delete the application by using kn command 
+			kn service delete helloworld-go
+	OR kubectl command
+			kubectl delete ksvc helloworld-go
